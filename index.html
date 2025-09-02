@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>INSYM 25</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="techBgCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;"></canvas>
+
+  <header>
+    <div class="brand">
+      <div class="logo-slot" id="logoSlot">
+        <img src="https://cdn.discordapp.com/attachments/1057230927878692914/1412372070163288064/Sistem_Informasi-removebg-preview.png?ex=68b80d7e&is=68b6bbfe&hm=32e184a44e8cdbd4a8492d44a98b9b5e10a1242de6360c93e0afb9cefeb8f4e4&" 
+             alt="Logo Sistem Informasi" 
+             style="max-width:100%; max-height:100%;">
+      </div>            
+      <div>
+        <h1>Pamong 2 Java</h1>
+        <div class="muted">Belajar Sistem Informasi — Portal Video</div>
+      </div>
+    </div>
+
+    <nav>
+      <ul>
+        <li><a href="#" data-page="home">Beranda</a></li>
+        <li><a href="#" data-page="intro">Materi Dasar</a></li>
+        <li><a href="#" data-page="advance">Materi Lanjutan</a></li>
+        <li><a href="#" data-page="programming">Pemrograman</a></li>
+        <li><a href="#" data-page="videos">Video Rekomendasi</a></li>
+        <li><a href="#" data-page="contact">Kontak</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <section class="page active" id="home">
+      <div class="hero">
+        <div class="left">
+          <h2>Belajar Sistem Informasi — dari nol sampai mahir</h2>
+          <p>Rangkaian video terkurasi (kursus penuh & tutorial) untuk pemula yang ingin paham konsep, hingga lanjutan yang mau mendalami database, jaringan, keamanan, dan pemrograman.</p>
+          <div style="display:flex;gap:10px;margin-top:8px">
+            <button class="cta" onclick="openPage('intro')">Mulai Materi Dasar</button>
+            <button class="cta" style="background:#90e0ef;color:#002026" onclick="openPage('videos')">Lihat Rekomendasi Video</button>
+          </div>
+        </div>
+        <div class="right" style="width:360px">
+          <div style="background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:14px;border-radius:12px">
+            <div style="font-weight:700;margin-bottom:6px">Ringkasan</div>
+            <div class="muted">Kategori tersedia:</div>
+            <ul style="margin-top:8px;line-height:1.8;color:#cfeff5">
+              <li>Pengantar Sistem Informasi</li>
+              <li>Dasar Komputer & Internet</li>
+              <li>Jaringan Komputer (CCNA)</li>
+              <li>Database & SQL</li>
+              <li>Data Mining & BI</li>
+              <li>Pemrograman (Python, Java, PHP)</li>
+              <li>Keamanan Informasi</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:18px">
+        <div class="muted">Insym 25</div>
+        <p style="color:#cfeff5;margin-top:8px">Website ini di buat oleh pamong 2 Java</p>
+      </div>
+    </section>
+
+    <section class="page" id="intro">
+      <h2>Materi Dasar — Pengantar & Fondasi</h2>
+
+      <div class="controls">
+        <div class="search">
+          🔎 <input id="searchIntro" placeholder="Cari judul materi dasar..." />
+        </div>
+        <div class="filters">
+          <div class="chip active" data-filter="all" onclick="filterGrid('intro','all',this)">Semua</div>
+          <div class="chip" data-filter="is" onclick="filterGrid('intro','is',this)">Info System</div>
+          <div class="chip" data-filter="comp" onclick="filterGrid('intro','comp',this)">Komputer</div>
+          <div class="chip" data-filter="net" onclick="filterGrid('intro','net',this)">Jaringan</div>
+          <div class="chip" data-filter="db" onclick="filterGrid('intro','db',this)">Database</div>
+        </div>
+      </div>
+
+      <div class="grid" id="grid-intro">
+      </div>
+    </section>
+
+    <section class="page" id="advance">
+      <h2>Materi Lanjutan — Analisis, Keamanan, BI</h2>
+
+      <div class="controls">
+        <div class="search">
+          🔎 <input id="searchAdvance" placeholder="Cari materi lanjutan..." />
+        </div>
+        <div class="filters">
+          <div class="chip active" data-filter="all" onclick="filterGrid('advance','all',this)">Semua</div>
+          <div class="chip" data-filter="sa" onclick="filterGrid('advance','sa',this)">Analisis Sistem</div>
+          <div class="chip" data-filter="sec" onclick="filterGrid('advance','sec',this)">Keamanan</div>
+          <div class="chip" data-filter="dm" onclick="filterGrid('advance','dm',this)">Data Mining</div>
+          <div class="chip" data-filter="erp" onclick="filterGrid('advance','erp',this)">Sistem Enterprise</div>
+        </div>
+      </div>
+
+      <div class="grid" id="grid-advance"></div>
+    </section>
+
+    <section class="page" id="programming">
+      <h2>Pemrograman — Dari Logika sampai Aplikasi</h2>
+
+      <div class="controls">
+        <div class="search"><input id="searchProg" placeholder="Cari materi pemrograman..." /></div>
+        <div class="filters">
+          <div class="chip active" data-filter="all" onclick="filterGrid('programming','all',this)">Semua</div>
+          <div class="chip" data-filter="py" onclick="filterGrid('programming','py',this)">Python</div>
+          <div class="chip" data-filter="js" onclick="filterGrid('programming','js',this)">JavaScript</div>
+          <div class="chip" data-filter="php" onclick="filterGrid('programming','php',this)">PHP</div>
+        </div>
+      </div>
+
+      <div class="grid" id="grid-programming"></div>
+    </section>
+
+    <section class="page" id="videos">
+      <h2>Video Rekomendasi Terstruktur (Pemula → Lanjutan)</h2>
+      <p style="color:#cfeff5;margin-top:8px">Playlist & kursus penuh yang direkomendasikan untuk urutan belajar — mulai dari pengantar sampai pemrograman.</p>
+
+      <div style="margin-top:12px" class="grid" id="grid-videos"></div>
+    </section>
+
+    <section class="page" id="contact">
+      <h2>Saran / Laporan bug</h2>
+      <p style="color:#cfeff5">Tinggalkan pesan — DI Bawah.</p>
+
+      <div style="max-width:720px;margin:16px auto;text-align:left">
+        <label style="font-weight:700;color:#dff8ff">Nama</label>
+        <input id="cname" style="width:100%;padding:10px;border-radius:8px;margin:8px 0;border:1px solid rgba(255,255,255,0.04);background:rgba(0,0,0,0.6);color:#dff8ff" />
+        
+        <label style="font-weight:700;color:#dff8ff">Pesan</label>
+        <textarea id="cmsg" rows="6" style="width:100%;padding:10px;border-radius:8px;margin:8px 0;border:1px solid rgba(255,255,255,0.04);background:rgba(0,0,0,0.6);color:#dff8ff"></textarea>
+        
+      
+        <div style="display:flex;gap:10px">
+          <button id="sendContact" style="padding:10px 16px;border-radius:10px;border:none;background:#00b4d8;color:#001f23;font-weight:800">Kirim</button>
+        </div>
+      </div>
+      
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    &copy; 2025 — Website Milik • Pamong 2 Java — Tempat Edukasi & Materi Sistem Informasi.  
+    <div style="margin-top:6px;font-size:12px;color:#c9f2f8">Sumber kursus & tutorial: freeCodeCamp, Mike Dane, Cisco, GCF Global, Traversy, The Net Ninja, dan kanal edukasi terpercaya lainnya.</div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
