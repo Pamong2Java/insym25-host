@@ -22,7 +22,7 @@
       </div>
     </div>
 
-    <nav>
+    <nav id="mainNav">
       <ul>
         <li><a href="#" data-page="home">Beranda</a></li>
         <li><a href="#" data-page="intro">Materi Dasar</a></li>
@@ -32,6 +32,7 @@
         <li><a href="#" data-page="contact">Kontak</a></li>
       </ul>
     </nav>
+    <button class="menu-toggle" id="menuToggle">☰</button>
   </header>
   <main>
     <section class="page active" id="home">
@@ -39,7 +40,7 @@
         <div class="left">
           <h2>Belajar Sistem Informasi — dari nol sampai mahir</h2>
           <p>Rangkaian video terkurasi (kursus penuh & tutorial) untuk pemula yang ingin paham konsep, hingga lanjutan yang mau mendalami database, jaringan, keamanan, dan pemrograman.</p>
-          <div style="display:flex;gap:10px;margin-top:8px">
+          <div style="display:flex;gap:10px;margin-top:8px" class="hero-buttons">
             <button class="cta" onclick="openPage('intro')">Mulai Materi Dasar</button>
             <button class="cta" style="background:#90e0ef;color:#002026" onclick="openPage('videos')">Lihat Rekomendasi Video</button>
           </div>
@@ -148,14 +149,11 @@
       
       </div>
     </section>
-
   </main>
-
   <footer>
     &copy; 2025 — Website Milik • Pamong 2 Java — Tempat Edukasi & Materi Sistem Informasi.  
     <div style="margin-top:6px;font-size:12px;color:#c9f2f8">Sumber kursus & tutorial: freeCodeCamp, Mike Dane, Cisco, GCF Global, Traversy, The Net Ninja, dan kanal edukasi terpercaya lainnya.</div>
   </footer>
-
   <script src="script.js"></script>
 </body>
 </html>
