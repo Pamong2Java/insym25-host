@@ -48,17 +48,7 @@ menuToggle.addEventListener('click', () => {
   mainNav.classList.toggle('active');
 });
 
-document.getElementById('sendContact').addEventListener('click', () => {
-  const n = document.getElementById('cname').value.trim();
-  const m = document.getElementById('cmsg').value.trim();
-  const note = document.getElementById('contactNote');
-  if (n && m) {
-    note.textContent = 'Terima kasih — pesan terkirim.';
-    document.getElementById('cname').value = '';
-    document.getElementById('cmsg').value = '';
-  } else note.textContent = 'Lengkapi nama & pesan.';
-  setTimeout(() => note.textContent = '', 4500);
-});
+// Removed the old sendContact event listener as it's replaced below
 
 const introVideos = [
   {
@@ -281,12 +271,15 @@ function showPopup(message, type) {
 
   requestAnimationFrame(() => {
     popup.style.opacity = '1';
-    popup.style.transform = 'translateX(-50%) translateY(0)';
+    // For mobile, we want it to be centered or aligned to the left with padding
+    // The CSS handles the left: 20px and transform: translateX(0) for smaller screens
+    // For larger screens, it will still be translateX(-50%)
+    popup.style.transform = 'translateY(0)'; 
   });
 
   setTimeout(() => {
     popup.style.opacity = '0';
-    popup.style.transform = 'translateX(-50%) translateY(20px)';
+    popup.style.transform = 'translateY(20px)';
     setTimeout(() => popup.remove(), 300);
   }, 3000);
 }
@@ -298,27 +291,78 @@ document.getElementById('sendContact').addEventListener('click', () => {
   const msg = cmsg.value.trim();
   let valid = true;
 
-  [cname, cmsg].forEach(field => {
-    if (!field.value.trim()) {
-      field.classList.add("error-shake");
-      valid = false;
+  // Only validate email if it's not disabled (i.e., not anonymous)
+  if (!cname.disabled && !name) {
+    cname.classList.add("error-shake");
+    valid = false;
+  }
+  
+  if (!msg) {
+    cmsg.classList.add("error-shake");
+    valid = false;
+  }
 
-      if (navigator.vibrate) {
-        navigator.vibrate([100, 50, 100]);
-      }
-
-      setTimeout(() => field.classList.remove("error-shake"), 500);
-    }
-  });
+  if (!valid && navigator.vibrate) {
+    navigator.vibrate([100, 50, 100]);
+  }
 
   if (valid) {
     showPopup('Berhasil Terkirim', 'success');
     cname.value = '';
     cmsg.value = '';
+    // Reset to email mode after sending
+    selectEmailOption('email');
   } else {
-    showPopup('Lengkapi nama & pesan', 'error');
+    showPopup('Lengkapi email & pesan', 'error'); // Changed message to reflect email/message
+  }
+
+  // Remove shake animation after a short delay
+  setTimeout(() => {
+    cname.classList.remove("error-shake");
+    cmsg.classList.remove("error-shake");
+  }, 500);
+});
+
+
+// New functionality for Email/Anonymous option
+const emailOptionToggle = document.getElementById('emailOptionToggle');
+const emailOptions = document.getElementById('emailOptions');
+const cnameInput = document.getElementById('cname');
+
+emailOptionToggle.addEventListener('click', () => {
+  emailOptions.classList.toggle('active');
+});
+
+emailOptions.querySelectorAll('button').forEach(button => {
+  button.addEventListener('click', (e) => {
+    const option = e.target.dataset.option;
+    selectEmailOption(option);
+    emailOptions.classList.remove('active'); // Hide options after selection
+  });
+});
+
+// Close options if clicked outside
+document.addEventListener('click', (e) => {
+  if (!emailOptionToggle.contains(e.target) && !emailOptions.contains(e.target)) {
+    emailOptions.classList.remove('active');
   }
 });
+
+function selectEmailOption(option) {
+  if (option === 'anonymous') {
+    cnameInput.value = 'Anonim';
+    cnameInput.disabled = true;
+    cnameInput.style.cursor = 'not-allowed';
+  } else {
+    cnameInput.value = '';
+    cnameInput.disabled = false;
+    cnameInput.style.cursor = 'text';
+    cnameInput.placeholder = 'Masukkan email Anda';
+  }
+}
+
+// Initialize with email option selected
+selectEmailOption('email');
 
 
 const canvas = document.getElementById('techBgCanvas');
