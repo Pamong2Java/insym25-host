@@ -1,163 +1,427 @@
-<!doctype html>
-<html lang="id">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>INSYM 25</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <canvas id="techBgCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;"></canvas>
+window.addEventListener("load", function() {
+  window.scrollTo(0, 0);
+});
 
-  <header>
-    <div class="brand">
-      <div class="logo-slot" id="logoSlot">
-        <img src="https://cdn.discordapp.com/attachments/1057230927878692914/1412372070163288064/Sistem_Informasi-removebg-preview.png?ex=68b80d7e&is=68b6bbfe&hm=32e184a44e8cdbd4a8492d44a98b9b5e10a1242de6360c93e0afb9cefeb8f4e4&" 
-             alt="Logo Sistem Informasi" 
-             style="max-width:100%; max-height:100%;">
-      </div>            
-      <div>
-        <h1>Pamong 2 Java</h1>
-        <div class="muted">Belajar Sistem Informasi — Portal Video</div>
-      </div>
-    </div>
+document.querySelectorAll("a[href^='#']").forEach(link => {
+  link.addEventListener("click", function(e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute("href"));
+    if (target) {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
+  });
+});
 
-    <nav id="mainNav">
-      <ul>
-        <li><a href="#" data-page="home">Beranda</a></li>
-        <li><a href="#" data-page="intro">Materi Dasar</a></li>
-        <li><a href="#" data-page="advance">Materi Lanjutan</a></li>
-        <li><a href="#" data-page="programming">Pemrograman</a></li>
-        <li><a href="#" data-page="videos">Video Rekomendasi</a></li>
-        <li><a href="#" data-page="contact">Kontak</a></li>
-      </ul>
-    </nav>
-    <button class="menu-toggle" id="menuToggle">☰</button>
-  </header>
-  <main>
-    <section class="page active" id="home">
-      <div class="hero">
-        <div class="left">
-          <h2>Belajar Sistem Informasi — dari nol sampai mahir</h2>
-          <p>Rangkaian video terkurasi (kursus penuh & tutorial) untuk pemula yang ingin paham konsep, hingga lanjutan yang mau mendalami database, jaringan, keamanan, dan pemrograman.</p>
-          <div style="display:flex;gap:10px;margin-top:8px" class="hero-buttons">
-            <button class="cta" onclick="openPage('intro')">Mulai Materi Dasar</button>
-            <button class="cta" style="background:#90e0ef;color:#002026" onclick="openPage('videos')">Lihat Rekomendasi Video</button>
-          </div>
-        </div>
-        <div class="right" style="width:360px">
-          <div style="background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:14px;border-radius:12px">
-            <div style="font-weight:700;margin-bottom:6px">Ringkasan</div>
-            <div class="muted">Kategori tersedia:</div>
-            <ul style="margin-top:8px;line-height:1.8;color:#cfeff5">
-              <li>Pengantar Sistem Informasi</li>
-              <li>Dasar Komputer & Internet</li>
-              <li>Jaringan Komputer (CCNA)</li>
-              <li>Database & SQL</li>
-              <li>Data Mining & BI</li>
-              <li>Pemrograman (Python, Java, PHP)</li>
-              <li>Keamanan Informasi</li>
-            </ul>
-          </div>
-        </div>
-      </div>
+const navLinks = document.querySelectorAll('nav a');
+const pages = document.querySelectorAll('.page');
+const mainNav = document.getElementById('mainNav');
+const menuToggle = document.getElementById('menuToggle');
 
-      <div style="margin-top:18px">
-        <div class="muted">Insym 25</div>
-        <p style="color:#cfeff5;margin-top:8px">Website ini di buat oleh pamong 2 Java</p>
-      </div>
-    </section>
+function openPage(id) {
+  pages.forEach(p => p.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) el.classList.add('active');
 
-    <section class="page" id="intro">
-      <h2>Materi Dasar — Pengantar & Fondasi</h2>
+  // Close mobile nav if open
+  if (mainNav.classList.contains('active')) {
+    mainNav.classList.remove('active');
+  }
 
-      <div class="controls">
-        <div class="search">
-          🔎 <input id="searchIntro" placeholder="Cari judul materi dasar..." />
-        </div>
-        <div class="filters">
-          <div class="chip active" data-filter="all" onclick="filterGrid('intro','all',this)">Semua</div>
-          <div class="chip" data-filter="is" onclick="filterGrid('intro','is',this)">Info System</div>
-          <div class="chip" data-filter="comp" onclick="filterGrid('intro','comp',this)">Komputer</div>
-          <div class="chip" data-filter="net" onclick="filterGrid('intro','net',this)">Jaringan</div>
-          <div class="chip" data-filter="db" onclick="filterGrid('intro','db',this)">Database</div>
-        </div>
-      </div>
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+}
 
-      <div class="grid" id="grid-intro">
-      </div>
-    </section>
+navLinks.forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    openPage(a.dataset.page);
+  });
+});
 
-    <section class="page" id="advance">
-      <h2>Materi Lanjutan — Analisis, Keamanan, BI</h2>
+// Toggle mobile navigation
+menuToggle.addEventListener('click', () => {
+  mainNav.classList.toggle('active');
+});
 
-      <div class="controls">
-        <div class="search">
-          🔎 <input id="searchAdvance" placeholder="Cari materi lanjutan..." />
-        </div>
-        <div class="filters">
-          <div class="chip active" data-filter="all" onclick="filterGrid('advance','all',this)">Semua</div>
-          <div class="chip" data-filter="sa" onclick="filterGrid('advance','sa',this)">Analisis Sistem</div>
-          <div class="chip" data-filter="sec" onclick="filterGrid('advance','sec',this)">Keamanan</div>
-          <div class="chip" data-filter="dm" onclick="filterGrid('advance','dm',this)">Data Mining</div>
-          <div class="chip" data-filter="erp" onclick="filterGrid('advance','erp',this)">Sistem Enterprise</div>
-        </div>
-      </div>
+// Removed the old sendContact event listener as it's replaced below
 
-      <div class="grid" id="grid-advance"></div>
-    </section>
+const introVideos = [
+  {
+    tag: 'is',
+    title: 'Introduction to Information Systems',
+    src: 'https://www.youtube.com/embed/30-nGJ0uCAs'
+  },
+  {
+    tag: 'comp',
+    title: 'Computer & Technology Basics',
+    src: 'https://www.youtube.com/embed/y2kg3MOk1sY'
+  },
+  {
+    tag: 'comp',
+    title: 'Computer Fundamentals for Beginners',
+    src: 'https://www.youtube.com/embed/eEo_aacpwCw'
+  },
+  {
+    tag: 'net',
+    title: 'Introduction to Networking | Network Fundamentals',
+    src: 'https://www.youtube.com/embed/9SIjoeE93lo'
+  },
+  {
+    tag: 'net',
+    title: 'Networking Basics Full Course',
+    src: 'https://www.youtube.com/embed/qiQR5rTSshw'
+  },
+  {
+    tag: 'db',
+    title: 'SQL and Databases - Full Course',
+    src: 'https://www.youtube.com/embed/HXV3zeQKqGY'
+  },
+  {
+    tag: 'db',
+    title: 'SQL Tutorial for Beginners',
+    src: 'https://www.youtube.com/embed/7S_tz1z_5bA'
+  }
+];
 
-    <section class="page" id="programming">
-      <h2>Pemrograman — Dari Logika sampai Aplikasi</h2>
+const advanceVideos = [
+  {
+    tag: 'sa',
+    title: 'System Analysis & Design Full Lecture',
+    src: 'https://www.youtube.com/embed/X898qHM2uP0'
+  },
+  {
+    tag: 'sec',
+    title: 'Cyber Security Full Course',
+    src: 'https://www.youtube.com/embed/6XCuMC0CVYI'
+  },
+  {
+    tag: 'dm',
+    title: 'Data Science & BI Introduction',
+    src: 'https://www.youtube.com/embed/ua-CiDNNj30'
+  }
+];
 
-      <div class="controls">
-        <div class="search"><input id="searchProg" placeholder="Cari materi pemrograman..." /></div>
-        <div class="filters">
-          <div class="chip active" data-filter="all" onclick="filterGrid('programming','all',this)">Semua</div>
-          <div class="chip" data-filter="py" onclick="filterGrid('programming','py',this)">Python</div>
-          <div class="chip" data-filter="js" onclick="filterGrid('programming','js',this)">JavaScript</div>
-          <div class="chip" data-filter="php" onclick="filterGrid('programming','php',this)">PHP</div>
-        </div>
-      </div>
+const programmingVideos = [
+  {
+    tag: 'py',
+    title: 'Learn Python - Full Course',
+    src: 'https://www.youtube.com/embed/rfscVS0vtbw'
+  },
+  {
+    tag: 'py',
+    title: 'Python for Beginners - Full Course',
+    src: 'https://www.youtube.com/embed/eWRfhZUzrAc'
+  },
+  {
+    tag: 'py',
+    title: 'Python Crash Course',
+    src: 'https://www.youtube.com/embed/kqtD5dpn9C8'
+  },
+  {
+    tag: 'js',
+    title: 'JavaScript Full Course (Beginner to Advanced)',
+    src: 'https://www.youtube.com/embed/PkZNo7MFNFg'
+  },
+  {
+    tag: 'php',
+    title: 'PHP Full Course 2025',
+    src: 'https://www.youtube.com/embed/VGBWm6xtPWs'
+  },
+  {
+    tag: 'php',
+    title: 'PHP & MySQL Crash Course',
+    src: 'https://www.youtube.com/embed/Ak6VTSekGP4'
+  }
+];
 
-      <div class="grid" id="grid-programming"></div>
-    </section>
+const recommended = [
+  {
+    title: 'Apa itu Sistem Informasi? (Short Intro)',
+    src: 'https://www.youtube.com/embed/dLfpZtIacbc'
+  },
+  {
+    title: 'Computer & Technology Basics Course',
+    src: 'https://www.youtube.com/embed/y2kg3MOk1sY'
+  },
+  {
+    title: 'Cisco CCNA Introduction to Networks',
+    src: 'https://www.youtube.com/embed/ty0HMs48U1k'
+  },
+  {
+    title: 'SQL for Beginners — Full Course',
+    src: 'https://www.youtube.com/embed/HXV3zeQKqGY'
+  },
+  {
+    title: 'Learn Python - Full Course',
+    src: 'https://www.youtube.com/embed/rfscVS0vtbw'
+  },
+  {
+    title: 'JavaScript Full Course - Beginner to Pro',
+    src: 'https://www.youtube.com/embed/PkZNo7MFNFg'
+  },
+  {
+    title: 'Java Full Course for Beginners',
+    src: 'https://www.youtube.com/embed/eIrMbAQSU34'
+  },
+  {
+    title: 'PHP Full Course - Beginner to Advanced',
+    src: 'https://www.youtube.com/embed/VGBWm6xtPWs'
+  },
+  {
+    title: 'Cyber Security Fundamentals',
+    src: 'https://www.youtube.com/embed/6XCuMC0CVYI'
+  },
+  {
+    title: 'Data Science & BI Introduction',
+    src: 'https://www.youtube.com/embed/ua-CiDNNj30'
+  }
+];
 
-    <section class="page" id="videos">
-      <h2>Video Rekomendasi Terstruktur (Pemula → Lanjutan)</h2>
-      <p style="color:#cfeff5;margin-top:8px">Playlist & kursus penuh yang direkomendasikan untuk urutan belajar — mulai dari pengantar sampai pemrograman.</p>
 
-      <div style="margin-top:12px" class="grid" id="grid-videos"></div>
-    </section>
+function mkCard(item) {
+  const el = document.createElement('div');
+  el.className = 'card';
+  el.dataset.tag = item.tag || '';
+  el.innerHTML = `
+            <div class="meta"><div class="title">${escapeHtml(item.title || item.id || 'Video')}</div>
+              <div style="font-size:0.85rem;color:#bff6ff">YouTube</div></div>
+            <div class="desc">${escapeHtml(item.desc || '')}</div>
+            <div style="margin-top:8px"><iframe loading="lazy" src="${item.src}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+          `;
+  return el;
+}
 
-    <section class="page" id="contact">
-      <h2>Saran / Laporan bug</h2>
-      <p style="color:#cfeff5">Tinggalkan pesan — DI Bawah.</p>
+function fillGrid(gridId, list) {
+  const g = document.getElementById(gridId);
+  if (!g) return;
+  g.innerHTML = '';
+  list.forEach(it => g.appendChild(mkCard(it)));
+}
 
-      <div style="max-width:720px;margin:16px auto;text-align:left">
-        <label style="font-weight:700;color:#dff8ff">Email</label>
-        <div class="email-input-wrapper">
-          <input id="cname" type="email" placeholder="Masukkan email Anda" />
-          <button id="emailOptionToggle" class="email-option-toggle">></button>
-          <div id="emailOptions" class="email-options">
-            <button data-option="email">Email</button>
-            <button data-option="anonymous">Anonim</button>
-          </div>
-        </div>
-        
-        <label style="font-weight:700;color:#dff8ff">Pesan</label>
-        <textarea id="cmsg" rows="6" placeholder="Tulis pesan Anda di sini"></textarea>
-        
-        <div style="display:flex;gap:10px">
-          <button id="sendContact" style="padding:10px 16px;border-radius:10px;border:none;background:#00b4d8;color:#001f23;font-weight:800">Kirim</button>
-        </div>
-      </div>
-    </section>
-  </main>
-  <footer>
-    &copy; 2025 — Website Milik • Pamong 2 Java — Tempat Edukasi & Materi Sistem Informasi.  
-    <div style="margin-top:6px;font-size:12px;color:#c9f2f8">Sumber kursus & tutorial: freeCodeCamp, Mike Dane, Cisco, GCF Global, Traversy, The Net Ninja, dan kanal edukasi terpercaya lainnya.</div>
-  </footer>
-  <script src="script.js"></script>
-</body>
-</html>
+
+fillGrid('grid-intro', introVideos);
+fillGrid('grid-advance', advanceVideos);
+fillGrid('grid-programming', programmingVideos);
+fillGrid('grid-videos', recommended);
+
+
+function filterGrid(pageKey, filter, chipEl) {
+
+  const parent = (chipEl && chipEl.parentNode) ? chipEl.parentNode : null;
+  if (parent) {
+    Array.from(parent.children).forEach(c => c.classList.remove('active'));
+    chipEl.classList.add('active');
+  }
+
+  const map = {
+    'intro': 'grid-intro',
+    'advance': 'grid-advance',
+    'programming': 'grid-programming'
+  };
+  const gridId = map[pageKey];
+  if (!gridId) return;
+  const grid = document.getElementById(gridId);
+  Array.from(grid.children).forEach(card => {
+    const tag = (card.dataset.tag || '').toLowerCase();
+    if (filter === 'all') card.style.display = '';
+    else card.style.display = (tag.indexOf(filter) !== -1) ? '' : 'none';
+  });
+}
+
+document.getElementById('searchIntro').addEventListener('input', (e) => {
+  const q = e.target.value.toLowerCase().trim();
+  document.querySelectorAll('#grid-intro .card').forEach(c => {
+    c.style.display = c.querySelector('.title').textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+});
+document.getElementById('searchAdvance').addEventListener('input', (e) => {
+  const q = e.target.value.toLowerCase().trim();
+  document.querySelectorAll('#grid-advance .card').forEach(c => {
+    c.style.display = c.querySelector('.title').textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+});
+document.getElementById('searchProg').addEventListener('input', (e) => {
+  const q = e.target.value.toLowerCase().trim();
+  document.querySelectorAll('#grid-programming .card').forEach(c => {
+    c.style.display = c.querySelector('.title').textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+});
+
+
+function escapeHtml(s) {
+  return (s || '').replace(/[&<>"']/g, (m) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  })[m]);
+}
+
+function showPopup(message, type) {
+  const popup = document.createElement('div');
+  popup.className = 'contact-popup ' + (type === 'success' ? 'success' : 'error');
+  popup.textContent = message;
+  document.body.appendChild(popup);
+
+  requestAnimationFrame(() => {
+    popup.style.opacity = '1';
+    // For mobile, we want it to be centered or aligned to the left with padding
+    // The CSS handles the left: 20px and transform: translateX(0) for smaller screens
+    // For larger screens, it will still be translateX(-50%)
+    popup.style.transform = 'translateY(0)'; 
+  });
+
+  setTimeout(() => {
+    popup.style.opacity = '0';
+    popup.style.transform = 'translateY(20px)';
+    setTimeout(() => popup.remove(), 300);
+  }, 3000);
+}
+
+document.getElementById('sendContact').addEventListener('click', () => {
+  const cname = document.getElementById('cname');
+  const cmsg = document.getElementById('cmsg');
+  const name = cname.value.trim();
+  const msg = cmsg.value.trim();
+  let valid = true;
+
+  // Only validate email if it's not disabled (i.e., not anonymous)
+  if (!cname.disabled && !name) {
+    cname.classList.add("error-shake");
+    valid = false;
+  }
+  
+  if (!msg) {
+    cmsg.classList.add("error-shake");
+    valid = false;
+  }
+
+  if (!valid && navigator.vibrate) {
+    navigator.vibrate([100, 50, 100]);
+  }
+
+  if (valid) {
+    showPopup('Berhasil Terkirim', 'success');
+    cname.value = '';
+    cmsg.value = '';
+    // Reset to email mode after sending
+    selectEmailOption('email');
+  } else {
+    showPopup('Lengkapi email & pesan', 'error'); // Changed message to reflect email/message
+  }
+
+  // Remove shake animation after a short delay
+  setTimeout(() => {
+    cname.classList.remove("error-shake");
+    cmsg.classList.remove("error-shake");
+  }, 500);
+});
+
+
+// New functionality for Email/Anonymous option
+const emailOptionToggle = document.getElementById('emailOptionToggle');
+const emailOptions = document.getElementById('emailOptions');
+const cnameInput = document.getElementById('cname');
+
+emailOptionToggle.addEventListener('click', () => {
+  emailOptions.classList.toggle('active');
+});
+
+emailOptions.querySelectorAll('button').forEach(button => {
+  button.addEventListener('click', (e) => {
+    const option = e.target.dataset.option;
+    selectEmailOption(option);
+    emailOptions.classList.remove('active'); // Hide options after selection
+  });
+});
+
+// Close options if clicked outside
+document.addEventListener('click', (e) => {
+  if (!emailOptionToggle.contains(e.target) && !emailOptions.contains(e.target)) {
+    emailOptions.classList.remove('active');
+  }
+});
+
+function selectEmailOption(option) {
+  if (option === 'anonymous') {
+    cnameInput.value = 'Anonim';
+    cnameInput.disabled = true;
+    cnameInput.style.cursor = 'not-allowed';
+  } else {
+    cnameInput.value = '';
+    cnameInput.disabled = false;
+    cnameInput.style.cursor = 'text';
+    cnameInput.placeholder = 'Masukkan email Anda';
+  }
+}
+
+// Initialize with email option selected
+selectEmailOption('email');
+
+
+const canvas = document.getElementById('techBgCanvas');
+const ctx = canvas.getContext('2d');
+
+let w = canvas.width = window.innerWidth;
+let h = canvas.height = window.innerHeight;
+
+const particles = [];
+const particleCount = 100;
+
+for (let i = 0; i < particleCount; i++) {
+  particles.push({
+    x: Math.random() * w,
+    y: Math.random() * h,
+    vx: (Math.random() - 0.5) * 0.6,
+    vy: (Math.random() - 0.5) * 0.6,
+    size: Math.random() * 2 + 1
+  });
+}
+
+function draw() {
+  ctx.clearRect(0, 0, w, h);
+  ctx.fillStyle = 'rgba(0,180,216,0.8)';
+
+  for (let i = 0; i < particleCount; i++) {
+    let p = particles[i];
+    p.x += p.vx;
+    p.y += p.vy;
+
+    if (p.x < 0 || p.x > w) p.vx *= -1;
+    if (p.y < 0 || p.y > h) p.vy *= -1;
+
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    ctx.fill();
+
+    for (let j = i + 1; j < particleCount; j++) {
+      let p2 = particles[j];
+      let dx = p.x - p2.x;
+      let dy = p.y - p2.y;
+      let dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 120) {
+        ctx.strokeStyle = 'rgba(0,180,216,' + (1 - dist / 120) * 0.4 + ')';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.stroke();
+      }
+    }
+  }
+
+  requestAnimationFrame(draw);
+}
+
+draw();
+
+window.addEventListener('resize', () => {
+  w = canvas.width = window.innerWidth;
+  h = canvas.height = window.innerHeight;
+});
