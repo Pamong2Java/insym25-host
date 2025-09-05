@@ -47,92 +47,175 @@ menuToggle.addEventListener('click', () => {
 });
 
 
-const YOUTUBE_API_KEY = 'AIzaSyBW3CEYSkDra70Q_xZbmSEnQJDskQDNZ38';
-const BASE_YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3/videos?part=snippet&key=';
-
-async function fetchVideoDetails(videoIds) {
-  if (!videoIds || videoIds.length === 0) return [];
-  const ids = videoIds.join(',');
-  const url = `${BASE_YOUTUBE_API_URL}${YOUTUBE_API_KEY}&id=${ids}`;
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
-    return data.items.map(item => ({
-      id: item.id,
-      title: item.snippet.title,
-      src: `https://www.youtube.com/embed/${item.id}`
-    }));
-  } catch (error) {
-    console.error("Error fetching video details:", error);
-    showPopup('Gagal memuat video. Cek koneksi atau kuota API.', 'error');
-    return [];
+const introVideos = [
+  {
+    tag: 'is',
+    title: 'Introduction to Information Systems',
+    src: 'https://www.youtube.com/embed/30-nGJ0uCAs'
+  },
+  {
+    tag: 'is',
+    title: 'Sistem Informasi - Konsep Dasar Sistem',
+    src: 'https://www.youtube.com/embed/MhIH4HkXS24?si=ID6Ym6NmKKH2bjur'
+  },
+  {
+    tag: 'is',
+    title: 'Review Jurusan Sistem Informasi',
+    src: 'https://www.youtube.com/embed/NL1VAu5ZCWw?si=DsswDn91m6LMHdev"'
+  },
+  {
+    tag: 'is',
+    title: 'Belajar Sistem Informasi',
+    src: 'https://www.youtube.com/embed/BeRkSU3sdW8?si=CmMb0E0nMe345FRd'
+  },
+  {
+    tag: 'comp',
+    title: 'Computer & Technology Basics',
+    src: 'https://www.youtube.com/embed/y2kg3MOk1sY'
+  },
+  {
+    tag: 'comp',
+    title: 'Tutorial Belajar Komputer dari Nol',
+    src: 'https://www.youtube.com/embed/rT31SRtdLsw?si=C_N2A_atz3GL7Lgm'
+  },
+  {
+    tag: 'comp',
+    title: 'Cara menghidupkan dan mematikan komputer yang benar dan aman',
+    src: 'https://www.youtube.com/embed/0hC3IGYz0RY?si=u0W3t_W36uqzX7bz'
+  },
+  {
+    tag: 'comp',
+    title: 'Mengenal fungsi dan istilah penting dalam komputer',
+    src: 'https://www.youtube.com/embed/8C1i62bsmSw?si=gaAEZAYTAdekYu5g'
+  },
+  {
+    tag: 'comp',
+    title: 'Perbedaan FILE, FOLDER dan APLIKASI',
+    src: 'https://www.youtube.com/embed/Pj5-obUQL-s?si=gFRCVdo6x9WdIA4h'
+  },
+  {
+    tag: 'net',
+    title: 'Introduction to Networking | Network Fundamentals',
+    src: 'https://www.youtube.com/embed/9SIjoeE93lo'
+  },
+  {
+    tag: 'net',
+    title: 'Networking Basics Full Course',
+    src: 'https://www.youtube.com/embed/qiQR5rTSshw'
+  },
+  {
+    tag: 'db',
+    title: 'SQL and Databases - Full Course',
+    src: 'https://www.youtube.com/embed/HXV3zeQKqGY'
+  },
+  {
+    tag: 'db',
+    title: 'SQL Tutorial for Beginners',
+    src: 'https://www.youtube.com/embed/7S_tz1z_5bA'
   }
-}
-
-const introVideoIds = {
-  is: ['30-nGJ0uCAs', 'MhIH4HkXS24', 'NL1VAu5ZCWw', 'BeRkSU3sdW8'],
-  comp: ['y2kg3MOk1sY', 'rT31SRtdLsw', '0hC3IGYz0RY', '8C1i62bsmSw', 'Pj5-obUQL-s'],
-  net: ['9SIjoeE93lo', 'qiQR5rTSshw'],
-  db: ['HXV3zeQKqGY', '7S_tz1z_5bA']
-};
-
-const advanceVideoIds = {
-  sa: ['X898qHM2uP0'],
-  sec: ['6XCuMC0CVYI'],
-  dm: ['ua-CiDNNj30']
-};
-
-const programmingVideoIds = {
-  py: ['rfscVS0vtbw', 'eWRfhZUzrAc', 'kqtD5dpn9C8'],
-  js: ['PkZNo7MFNFg'],
-  php: ['VGBWm6xtPWs', 'Ak6VTSekGP4']
-};
-
-const recommendedVideoIds = [
-  'dLfpZtIacbc', 'y2kg3MOk1sY', 'ty0HMs48U1k', 'HXV3zeQKqGY',
-  'rfscVS0vtbw', 'PkZNo7MFNFg', 'eIrMbAQSU34', 'VGBWm6xtPWs',
-  '6XCuMC0CVYI', 'ua-CiDNNj30'
 ];
 
-async function loadAndFillGrid(gridId, videoIdMapOrArray) {
-  let videosData = [];
-
-  if (Array.isArray(videoIdMapOrArray)) {
-    videosData = await fetchVideoDetails(videoIdMapOrArray);
-  } else {
-    for (const tag in videoIdMapOrArray) {
-      const ids = videoIdMapOrArray[tag];
-      const fetched = await fetchVideoDetails(ids);
-      fetched.forEach(video => video.tag = tag);
-      videosData = videosData.concat(fetched);
-    }
+const advanceVideos = [
+  {
+    tag: 'sa',
+    title: 'System Analysis & Design Full Lecture',
+    src: 'https://www.youtube.com/embed/X898qHM2uP0'
+  },
+  {
+    tag: 'sec',
+    title: 'Cyber Security Full Course',
+    src: 'https://www.youtube.com/embed/6XCuMC0CVYI'
+  },
+  {
+    tag: 'dm',
+    title: 'Data Science & BI Introduction',
+    src: 'https://www.youtube.com/embed/ua-CiDNNj30'
   }
-  fillGrid(gridId, videosData);
-  return videosData;
-}
+];
 
-let allIntroVideos = [];
-let allAdvanceVideos = [];
-let allProgrammingVideos = [];
+const programmingVideos = [
+  {
+    tag: 'py',
+    title: 'Learn Python - Full Course',
+    src: 'https://www.youtube.com/embed/rfscVS0vtbw'
+  },
+  {
+    tag: 'py',
+    title: 'Python for Beginners - Full Course',
+    src: 'https://www.youtube.com/embed/eWRfhZUzrAc'
+  },
+  {
+    tag: 'py',
+    title: 'Python Crash Course',
+    src: 'https://www.youtube.com/embed/kqtD5dpn9C8'
+  },
+  {
+    tag: 'js',
+    title: 'JavaScript Full Course (Beginner to Advanced)',
+    src: 'https://www.youtube.com/embed/PkZNo7MFNFg'
+  },
+  {
+    tag: 'php',
+    title: 'PHP Full Course 2025',
+    src: 'https://www.youtube.com/embed/VGBWm6xtPWs'
+  },
+  {
+    tag: 'php',
+    title: 'PHP & MySQL Crash Course',
+    src: 'https://www.youtube.com/embed/Ak6VTSekGP4'
+  }
+];
 
-document.addEventListener('DOMContentLoaded', async () => {
-  allIntroVideos = await loadAndFillGrid('grid-intro', introVideoIds);
-  allAdvanceVideos = await loadAndFillGrid('grid-advance', advanceVideoIds);
-  allProgrammingVideos = await loadAndFillGrid('grid-programming', programmingVideoIds);
-  await loadAndFillGrid('grid-videos', recommendedVideoIds);
-});
-
+const recommended = [
+  {
+    title: 'Apa itu Sistem Informasi? (Short Intro)',
+    src: 'https://www.youtube.com/embed/dLfpZtIacbc'
+  },
+  {
+    title: 'Computer & Technology Basics Course',
+    src: 'https://www.youtube.com/embed/y2kg3MOk1sY'
+  },
+  {
+    title: 'Cisco CCNA Introduction to Networks',
+    src: 'https://www.youtube.com/embed/ty0HMs48U1k'
+  },
+  {
+    title: 'SQL for Beginners — Full Course',
+    src: 'https://www.youtube.com/embed/HXV3zeQKqGY'
+  },
+  {
+    title: 'Learn Python - Full Course',
+    src: 'https://www.youtube.com/embed/rfscVS0vtbw'
+  },
+  {
+    title: 'JavaScript Full Course - Beginner to Pro',
+    src: 'https://www.youtube.com/embed/PkZNo7MFNFg'
+  },
+  {
+    title: 'Java Full Course for Beginners',
+    src: 'https://www.youtube.com/embed/eIrMbAQSU34'
+  },
+  {
+    title: 'PHP Full Course - Beginner to Advanced',
+    src: 'https://www.youtube.com/embed/VGBWm6xtPWs'
+  },
+  {
+    title: 'Cyber Security Fundamentals',
+    src: 'https://www.youtube.com/embed/6XCuMC0CVYI'
+  },
+  {
+    title: 'Data Science & BI Introduction',
+    src: 'https://www.youtube.com/embed/ua-CiDNNj30'
+  }
+];
 
 
 function mkCard(item) {
   const el = document.createElement('div');
   el.className = 'card';
-  el.dataset.tag = item.tag || ''; // Pastikan tag ada
+  el.dataset.tag = item.tag || '';
   el.innerHTML = `
-            <div class="meta"><div class="title">${escapeHtml(item.title || 'Video Tanpa Judul')}</div>
+            <div class="meta"><div class="title">${escapeHtml(item.title || item.id || 'Video')}</div>
               <div style="font-size:0.85rem;color:#bff6ff">YouTube</div></div>
             <div class="desc">${escapeHtml(item.desc || '')}</div>
             <div style="margin-top:8px"><iframe loading="lazy" src="${item.src}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
@@ -148,7 +231,14 @@ function fillGrid(gridId, list) {
 }
 
 
+fillGrid('grid-intro', introVideos);
+fillGrid('grid-advance', advanceVideos);
+fillGrid('grid-programming', programmingVideos);
+fillGrid('grid-videos', recommended);
+
+
 function filterGrid(pageKey, filter, chipEl) {
+
   const parent = (chipEl && chipEl.parentNode) ? chipEl.parentNode : null;
   if (parent) {
     Array.from(parent.children).forEach(c => c.classList.remove('active'));
@@ -172,21 +262,21 @@ function filterGrid(pageKey, filter, chipEl) {
 
 document.getElementById('searchIntro').addEventListener('input', (e) => {
   const q = e.target.value.toLowerCase().trim();
-  // Filter dari data yang sudah dimuat
-  const filteredVideos = allIntroVideos.filter(video => video.title.toLowerCase().includes(q));
-  fillGrid('grid-intro', filteredVideos);
+  document.querySelectorAll('#grid-intro .card').forEach(c => {
+    c.style.display = c.querySelector('.title').textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
 });
-
 document.getElementById('searchAdvance').addEventListener('input', (e) => {
   const q = e.target.value.toLowerCase().trim();
-  const filteredVideos = allAdvanceVideos.filter(video => video.title.toLowerCase().includes(q));
-  fillGrid('grid-advance', filteredVideos);
+  document.querySelectorAll('#grid-advance .card').forEach(c => {
+    c.style.display = c.querySelector('.title').textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
 });
-
 document.getElementById('searchProg').addEventListener('input', (e) => {
   const q = e.target.value.toLowerCase().trim();
-  const filteredVideos = allProgrammingVideos.filter(video => video.title.toLowerCase().includes(q));
-  fillGrid('grid-programming', filteredVideos);
+  document.querySelectorAll('#grid-programming .card').forEach(c => {
+    c.style.display = c.querySelector('.title').textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
 });
 
 
@@ -208,7 +298,7 @@ function showPopup(message, type) {
 
   requestAnimationFrame(() => {
     popup.style.opacity = '1';
-    popup.style.transform = 'translateY(0)';
+    popup.style.transform = 'translateY(0)'; 
   });
 
   setTimeout(() => {
@@ -228,7 +318,7 @@ document.getElementById('sendContact').addEventListener('click', () => {
     cname.classList.add("error-shake");
     valid = false;
   }
-
+  
   if (!msg) {
     cmsg.classList.add("error-shake");
     valid = false;
