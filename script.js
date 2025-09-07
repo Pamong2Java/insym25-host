@@ -1,5 +1,6 @@
 window.addEventListener("load", function() {
   window.scrollTo(0, 0);
+  openPage('home'); 
 });
 
 document.querySelectorAll("a[href^='#']").forEach(link => {
@@ -19,6 +20,7 @@ const navLinks = document.querySelectorAll('nav a');
 const pages = document.querySelectorAll('.page');
 const mainNav = document.getElementById('mainNav');
 const menuToggle = document.getElementById('menuToggle');
+const body = document.body; // Mendapatkan elemen body
 
 function openPage(id) {
   pages.forEach(p => p.classList.remove('active'));
@@ -27,6 +29,13 @@ function openPage(id) {
 
   if (mainNav.classList.contains('active')) {
     mainNav.classList.remove('active');
+  }
+
+  // Logika untuk mencegah/mengizinkan scroll
+  if (id === 'home') {
+    body.classList.add('no-scroll');
+  } else {
+    body.classList.remove('no-scroll');
   }
 
   window.scrollTo({
@@ -911,7 +920,7 @@ const programmingVideos = [
   {
     tag: 'php',
     title: 'Belajar PHP MySQL CRUD Untuk Pemula (Playlist)',
-    src: 'https://www.youtube.com/embed/videoseries?list=PLXzMpPdJyzlBONq8ZTJkmx2pr9NPxSN03'
+    src: 'https://www.youtube.com/embed/videoseries?list=PLXzMpPdJyzlBON8ZTJkmx2pr9NPxSN03'
   },
   {
     tag: 'py',
