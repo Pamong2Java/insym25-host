@@ -578,37 +578,6 @@ const advanceVideos = [
     src: 'https://www.youtube.com/embed/cElmNyHCdIo'
   },
   {
-    tag: 'sa',
-    title: 'Use Case Diagram – Pengenalan dan Contoh',
-    src: 'https://www.youtube.com/embed/Yn3zNj4ljZg'
-  },
-  {
-    tag: 'sa',
-    title: 'Analisis Kebutuhan Sistem – Studi Kasus Penjualan',
-    src: 'https://www.youtube.com/embed/Jp7ju-5UrSA'
-  },
-  {
-    tag: 'sa',
-    title: 'SDLC (Software Development Life Cycle) Tahapan Lengkap',
-    src: 'https://www.youtube.com/embed/cj4oEJ8ma5s'
-  },
-  {
-    tag: 'sa',
-    title: 'ERD (Entity Relationship Diagram) Studi Kasus UKM',
-    src: 'https://www.youtube.com/embed/KjGSpVL5LXQ'
-  },
-
-  {
-    tag: 'sec',
-    title: 'Keamanan Siber: Prinsip Dasar yang Wajib Kamu Tahu',
-    src: 'https://www.youtube.com/embed/OAqSM1Y3-Xs'
-  },
-  {
-    tag: 'sec',
-    title: 'Panduan Praktis Proteksi Data Pribadi Online',
-    src: 'https://www.youtube.com/embed/xJTEVaLOhNs'
-  },
-  {
     tag: 'sec',
     title: 'Phishing dan Cara Menghindarnya',
     src: 'https://www.youtube.com/embed/uOdbn5ax_zU'
@@ -1280,3 +1249,4 @@ window.addEventListener('resize', () => {
   w = canvas.width = window.innerWidth;
   h = canvas.height = window.innerHeight;
 });
+
