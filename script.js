@@ -8,10 +8,7 @@ document.querySelectorAll("a[href^='#']").forEach(link => {
     e.preventDefault();
     const target = document.querySelector(this.getAttribute("href"));
     if (target) {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   });
 });
@@ -20,7 +17,7 @@ const navLinks = document.querySelectorAll('nav a');
 const pages = document.querySelectorAll('.page');
 const mainNav = document.getElementById('mainNav');
 const menuToggle = document.getElementById('menuToggle');
-const body = document.body; // Mendapatkan elemen body
+const body = document.body;
 
 function openPage(id) {
   pages.forEach(p => p.classList.remove('active'));
@@ -31,17 +28,13 @@ function openPage(id) {
     mainNav.classList.remove('active');
   }
 
-  // Logika untuk mencegah/mengizinkan scroll
   if (id === 'home') {
     body.classList.add('no-scroll');
   } else {
     body.classList.remove('no-scroll');
   }
 
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 navLinks.forEach(a => {
@@ -54,7 +47,6 @@ navLinks.forEach(a => {
 menuToggle.addEventListener('click', () => {
   mainNav.classList.toggle('active');
 });
-
 
 const introVideos = [
   {
@@ -474,16 +466,6 @@ const introVideos = [
   },
   {
     tag: 'db',
-    title: 'SQL & MySQL Design Basics (Playlist DB Design)',
-    src: 'https://www.youtube.com/embed/PL-CtdCApEFH_luRKP3SaRrI3FUeXvW0f4'
-  },
-  {
-    tag: 'db',
-    title: 'Playlist Tutorial MySQL – Bahasa Indonesia',
-    src: 'https://www.youtube.com/embed/PL-CtdCApEFH_P2_2zR6pvDublvpD3fF6W'
-  },
-  {
-    tag: 'db',
     title: 'Tutorial Java Database (Bahasa Indonesia)',
     src: 'https://www.youtube.com/embed/_25BmjGfjQQ'
   },
@@ -579,34 +561,8 @@ const advanceVideos = [
   },
   {
     tag: 'sec',
-    title: 'Phishing dan Cara Menghindarnya',
-    src: 'https://www.youtube.com/embed/uOdbn5ax_zU'
-  },
-  {
-    tag: 'sec',
-    title: 'Keamanan WiFi – Tips Praktis Melindungi Jaringan Rumah',
-    src: 'https://www.youtube.com/embed/Z1pPP8uouL4'
-  },
-
-  {
-    tag: 'dm',
-    title: 'Machine Learning untuk Pemula (Bahasa Indonesia)',
-    src: 'https://www.youtube.com/embed/jJ0mfsaelSo'
-  },
-  {
-    tag: 'dm',
-    title: 'Clustering & Classification – Penjelasan Ringkas',
-    src: 'https://www.youtube.com/embed/hxGHlWQZf6I'
-  },
-  {
-    tag: 'dm',
-    title: 'Pengenalan Big Data dan Analytical Tools',
-    src: 'https://www.youtube.com/embed/NzMJO5vj_hQ'
-  },
-  {
-    tag: 'dm',
-    title: 'Business Intelligence – Dasar dan Studi Kasus',
-    src: 'https://www.youtube.com/embed/oDB6nMZRD6I'
+    title: 'Apa itu Phising? Ketahui Pengertian, Teknik dan Bahayanya',
+    src: 'https://www.youtube.com/embed/UygZfswZgRE?si=rZcXhDUwvtIR0CA-'
   },
   {
     tag: 'sa',
@@ -690,18 +646,8 @@ const advanceVideos = [
   },
   {
     tag: 'es',
-    title: 'ERPNext Tutorial Bahasa Indonesia (Playlist)',
-    src: 'https://www.youtube.com/embed/videoseries?list=PLb6vm7S1oD2gTWBABqNBUzT8bmYDKCmp2'
-  },
-  {
-    tag: 'es',
     title: 'Webinar: Implementasi IT Enterprise Architecture di Industri',
     src: 'https://www.youtube.com/embed/0dJ_t-wQLqo'
-  },
-  {
-    tag: 'es',
-    title: 'Tutorial Odoo ERP – Odoo Bahasa Indonesia (Playlist)',
-    src: 'https://www.youtube.com/embed/videoseries?list=PLYvnSU5A2viUDCq9BEqxR80ng4Nb8SmVQ'
   },
   {
     tag: 'es',
@@ -717,16 +663,6 @@ const advanceVideos = [
     tag: 'es',
     title: 'Perbandingan Odoo Community vs Enterprise',
     src: 'https://www.youtube.com/embed/wH8xIP8jKIc'
-  },
-  {
-    tag: 'es',
-    title: 'Tutorial ERPNext Bahasa Indonesia (Playlist)',
-    src: 'https://www.youtube.com/embed/videoseries?list=PLb6vm7S1oD2gTWBABqNBUzT8bmYDKCmp2'
-  },
-  {
-    tag: 'es',
-    title: 'Tutorial Odoo ERP – Odoo Bahasa Indonesia (Playlist)',
-    src: 'https://www.youtube.com/embed/videoseries?list=PLYvnSU5A2viUDCq9BEqxR80ng4Nb8SmVQ'
   },
   {
     tag: 'es',
@@ -797,11 +733,6 @@ const programmingVideos = [
     src: 'https://www.youtube.com/embed/Z7mXO2yOzHA'
   },
   {
-    tag: 'js',
-    title: 'Tutorial JavaScript – Playlist Dasar Bahasa Indonesia',
-    src: 'https://www.youtube.com/embed/videoseries?list=PL-CtdCApEFH8SS0Gsj9_a0cC0jypFEoSg'
-  },
-  {
     tag: 'php',
     title: 'Belajar Web Dengan PHP & Database Untuk Pemula Dari Nol',
     src: 'https://www.youtube.com/embed/Ak6VTSekGP4'
@@ -815,11 +746,6 @@ const programmingVideos = [
     tag: 'php',
     title: 'TUTORIAL PHP DASAR Bahasa Indonesia',
     src: 'https://www.youtube.com/embed/TaBWhb5SPfc'
-  },
-  {
-    tag: 'php',
-    title: 'Belajar PHP MySQL CRUD Untuk Pemula (Playlist)',
-    src: 'https://www.youtube.com/embed/videoseries?list=PLXzMpPdJyzlBONq8ZTJkmx2pr9NPxSN03'
   },
   {
     tag: 'py',
@@ -858,18 +784,8 @@ const programmingVideos = [
   },
   {
     tag: 'js',
-    title: 'Tutorial JavaScript – Playlist Dasar Bahasa Indonesia',
-    src: 'https://www.youtube.com/embed/videoseries?list=PL-CtdCApEFH8SS0Gsj9_a0cC0jypFEoSg'
-  },
-  {
-    tag: 'js',
     title: 'TUTORIAL JAVASCRIPT DASAR BAHASA INDONESIA (Programmer Zaman Now)',
     src: 'https://www.youtube.com/embed/mOLglF_8UNc'
-  },
-  {
-    tag: 'js',
-    title: 'Tutorial JavaScript Untuk Pemula Bahasa Indonesia (Playlist)',
-    src: 'https://www.youtube.com/embed/videoseries?list=PLnrs9DcLyeJT2OAViJYE5FfsJTTDB7hFR'
   },
   {
     tag: 'php',
@@ -885,11 +801,6 @@ const programmingVideos = [
     tag: 'php',
     title: 'TUTORIAL PHP DASAR Bahasa Indonesia',
     src: 'https://www.youtube.com/embed/TaBWhb5SPfc'
-  },
-  {
-    tag: 'php',
-    title: 'Belajar PHP MySQL CRUD Untuk Pemula (Playlist)',
-    src: 'https://www.youtube.com/embed/videoseries?list=PLXzMpPdJyzlBON8ZTJkmx2pr9NPxSN03'
   },
   {
     tag: 'py',
@@ -935,10 +846,18 @@ const programmingVideos = [
     tag: 'php',
     title: 'Jago PHP! Dasar PHP Step by Step',
     src: 'https://www.youtube.com/embed/6Xbt-lNHXt0'
-  }
+  },
+  {
+    title: 'Pengembangan Sistem Informasi – Konsep Sistem Informasi',
+    src: 'https://www.youtube.com/embed/yVgezl_RzKo'
+  },
 ];
 
 const recommended = [
+  {
+    title: 'Apa itu Phising? Ketahui Pengertian, Teknik dan Bahayanya',
+    src: 'https://www.youtube.com/embed/UygZfswZgRE?si=rZcXhDUwvtIR0CA-'
+  },
   {
     title: 'Apa itu Sistem Informasi? (Short Intro)',
     src: 'https://www.youtube.com/embed/dLfpZtIacbc'
@@ -958,10 +877,6 @@ const recommended = [
   {
     title: 'Learn Python – Full Course for Beginners',
     src: 'https://www.youtube.com/embed/rfscVS0vtbw'
-  },
-  {
-    title: 'Learn JavaScript – Full Course (Beginner to Pro)',
-    src: 'https://www.youtube.com/embed/ PkZNo7MFNFg'
   },
   {
     title: 'Java Full Course for Beginners',
@@ -1014,20 +929,75 @@ const recommended = [
   {
     title: 'Data Science Dasar & Business Intelligence',
     src: 'https://www.youtube.com/embed/ua-CiDNNj30'
+  },
+  {
+    title: 'Jago PHP! Dasar PHP Step by Step',
+    src: 'https://www.youtube.com/embed/6Xbt-lNHXt0'
+  },
+  {
+    title: 'Pengembangan Sistem Informasi – Konsep Sistem Informasi (Part 1)',
+    src: 'https://www.youtube.com/embed/yVgezl_RzKo'
+  },
+  {
+    title: 'Mengenal fungsi dan istilah penting dalam komputer',
+    src: 'https://www.youtube.com/embed/8C1i62bsmSw?si=gaAEZAYTAdekYu5g'
+  },
+  {
+    title: 'Tutorial Dasar Belajar DATABASE Untuk Pemula Dari 0',
+    src: 'https://www.youtube.com/embed/X94JAwDfNvA'
+  },
+  {
+    title: 'Mengenal Router pada Jaringan Komputer',
+    src: 'https://www.youtube.com/embed/PP_hmimimxI'
+  },
+  {
+    title: 'Pengertian Dasar Sistem Informasi',
+    src: 'https://www.youtube.com/embed/fxgHlHF31DA?si=Z1ww1NotfL1EhOXG'
   }
 ];
-
+/* =====================
+   RENDER VIDEO (THUMBNAIL → IFRAME KETIKA DIKLIK)
+===================== */
+function getYoutubeId(url) {
+  const match = url.match(/(?:embed\/|v=|youtu\.be\/)([^?&"'>]+)/);
+  return match ? match[1] : null;
+}
 
 function mkCard(item) {
   const el = document.createElement('div');
   el.className = 'card';
   el.dataset.tag = item.tag || '';
+
+  const vid = getYoutubeId(item.src);
+  const thumb = vid ? `https://img.youtube.com/vi/${vid}/hqdefault.jpg` : '';
+
   el.innerHTML = `
-            <div class="meta"><div class="title">${escapeHtml(item.title || item.id || 'Video')}</div>
-              <div style="font-size:0.85rem;color:#bff6ff">YouTube</div></div>
-            <div class="desc">${escapeHtml(item.desc || '')}</div>
-            <div style="margin-top:8px"><iframe loading="lazy" src="${item.src}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
-          `;
+    <div class="meta">
+      <div class="title">${escapeHtml(item.title || 'Video')}</div>
+      <div style="font-size:0.85rem;color:#bff6ff">YouTube</div>
+    </div>
+    <div class="desc">${escapeHtml(item.desc || '')}</div>
+    <div class="video-thumb" style="position:relative;cursor:pointer;margin-top:8px;height:180px;overflow:hidden;border-radius:10px">
+      <img src="${thumb}" alt="Thumbnail" style="width:100%;height:100%;object-fit:cover;display:block">
+      <div style="
+        position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+        background:rgba(0,0,0,0.6);border-radius:50%;width:60px;height:60px;
+        display:flex;align-items:center;justify-content:center;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+             fill="#fff" width="36px" height="36px"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </div>
+  `;
+
+  const thumbDiv = el.querySelector('.video-thumb');
+  thumbDiv.addEventListener('click', () => {
+    thumbDiv.innerHTML = `
+      <iframe src="${item.src}" frameborder="0" allowfullscreen
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              style="width:100%;height:180px;border-radius:10px;border:0;display:block"></iframe>
+    `;
+  });
+
   return el;
 }
 
@@ -1038,33 +1008,28 @@ function fillGrid(gridId, list) {
   list.forEach(it => g.appendChild(mkCard(it)));
 }
 
-
+/* render awal */
 fillGrid('grid-intro', introVideos);
 fillGrid('grid-advance', advanceVideos);
 fillGrid('grid-programming', programmingVideos);
 fillGrid('grid-videos', recommended);
 
-
+/* =====================
+   FILTER & SEARCH
+===================== */
 function filterGrid(pageKey, filter, chipEl) {
-
-  const parent = (chipEl && chipEl.parentNode) ? chipEl.parentNode : null;
+  const parent = chipEl?.parentNode;
   if (parent) {
     Array.from(parent.children).forEach(c => c.classList.remove('active'));
     chipEl.classList.add('active');
   }
-
-  const map = {
-    'intro': 'grid-intro',
-    'advance': 'grid-advance',
-    'programming': 'grid-programming'
-  };
+  const map = { 'intro': 'grid-intro', 'advance': 'grid-advance', 'programming': 'grid-programming' };
   const gridId = map[pageKey];
   if (!gridId) return;
   const grid = document.getElementById(gridId);
   Array.from(grid.children).forEach(card => {
     const tag = (card.dataset.tag || '').toLowerCase();
-    if (filter === 'all') card.style.display = '';
-    else card.style.display = (tag.indexOf(filter) !== -1) ? '' : 'none';
+    card.style.display = (filter === 'all' || tag.includes(filter)) ? '' : 'none';
   });
 }
 
@@ -1087,17 +1052,15 @@ document.getElementById('searchProg').addEventListener('input', (e) => {
   });
 });
 
-
 function escapeHtml(s) {
   return (s || '').replace(/[&<>"']/g, (m) => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;'
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
   })[m]);
 }
 
+/* =====================
+   POPUP KONTAK
+===================== */
 function showPopup(message, type) {
   const popup = document.createElement('div');
   popup.className = 'contact-popup ' + (type === 'success' ? 'success' : 'error');
@@ -1116,6 +1079,9 @@ function showPopup(message, type) {
   }, 3000);
 }
 
+/* =====================
+   FORM KONTAK
+===================== */
 document.getElementById('sendContact').addEventListener('click', () => {
   const cname = document.getElementById('cname');
   const cmsg = document.getElementById('cmsg');
@@ -1126,15 +1092,11 @@ document.getElementById('sendContact').addEventListener('click', () => {
     cname.classList.add("error-shake");
     valid = false;
   }
-  
   if (!msg) {
     cmsg.classList.add("error-shake");
     valid = false;
   }
-
-  if (!valid && navigator.vibrate) {
-    navigator.vibrate([100, 50, 100]);
-  }
+  if (!valid && navigator.vibrate) navigator.vibrate([100, 50, 100]);
 
   if (valid) {
     showPopup('Berhasil Terkirim', 'success');
@@ -1144,7 +1106,6 @@ document.getElementById('sendContact').addEventListener('click', () => {
   } else {
     showPopup('Lengkapi email & pesan', 'error');
   }
-
   setTimeout(() => {
     cname.classList.remove("error-shake");
     cmsg.classList.remove("error-shake");
@@ -1158,46 +1119,39 @@ const cnameInput = document.getElementById('cname');
 emailOptionToggle.addEventListener('click', () => {
   emailOptions.classList.toggle('active');
 });
-
 emailOptions.querySelectorAll('button').forEach(button => {
   button.addEventListener('click', (e) => {
-    const option = e.target.dataset.option;
-    selectEmailOption(option);
+    selectEmailOption(e.target.dataset.option);
     emailOptions.classList.remove('active');
   });
 });
-
 document.addEventListener('click', (e) => {
   if (!emailOptionToggle.contains(e.target) && !emailOptions.contains(e.target)) {
     emailOptions.classList.remove('active');
   }
 });
-
 function selectEmailOption(option) {
   if (option === 'anonymous') {
     cnameInput.value = 'Anonim';
     cnameInput.disabled = true;
-    cnameInput.style.cursor = 'not-allowed';
   } else {
     cnameInput.value = '';
     cnameInput.disabled = false;
-    cnameInput.style.cursor = 'text';
     cnameInput.placeholder = 'Masukkan email Anda';
   }
 }
-
 selectEmailOption('email');
 
-
+/* =====================
+   CANVAS BACKGROUND
+===================== */
 const canvas = document.getElementById('techBgCanvas');
 const ctx = canvas.getContext('2d');
-
 let w = canvas.width = window.innerWidth;
 let h = canvas.height = window.innerHeight;
 
 const particles = [];
 const particleCount = 100;
-
 for (let i = 0; i < particleCount; i++) {
   particles.push({
     x: Math.random() * w,
@@ -1207,46 +1161,29 @@ for (let i = 0; i < particleCount; i++) {
     size: Math.random() * 2 + 1
   });
 }
-
 function draw() {
   ctx.clearRect(0, 0, w, h);
   ctx.fillStyle = 'rgba(0,180,216,0.8)';
-
   for (let i = 0; i < particleCount; i++) {
     let p = particles[i];
-    p.x += p.vx;
-    p.y += p.vy;
-
+    p.x += p.vx; p.y += p.vy;
     if (p.x < 0 || p.x > w) p.vx *= -1;
     if (p.y < 0 || p.y > h) p.vy *= -1;
-
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-    ctx.fill();
-
+    ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
     for (let j = i + 1; j < particleCount; j++) {
       let p2 = particles[j];
-      let dx = p.x - p2.x;
-      let dy = p.y - p2.y;
+      let dx = p.x - p2.x, dy = p.y - p2.y;
       let dist = Math.sqrt(dx * dx + dy * dy);
       if (dist < 120) {
         ctx.strokeStyle = 'rgba(0,180,216,' + (1 - dist / 120) * 0.4 + ')';
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(p.x, p.y);
-        ctx.lineTo(p2.x, p2.y);
-        ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
       }
     }
   }
-
   requestAnimationFrame(draw);
 }
-
 draw();
-
 window.addEventListener('resize', () => {
   w = canvas.width = window.innerWidth;
   h = canvas.height = window.innerHeight;
 });
-
