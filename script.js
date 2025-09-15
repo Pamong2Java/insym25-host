@@ -1,6 +1,7 @@
 window.addEventListener("load", function() {
   window.scrollTo(0, 0);
   openPage('home'); 
+  hideLoadingOverlay();
 });
 
 document.querySelectorAll("a[href^='#']").forEach(link => {
@@ -18,11 +19,47 @@ const pages = document.querySelectorAll('.page');
 const mainNav = document.getElementById('mainNav');
 const menuToggle = document.getElementById('menuToggle');
 const body = document.body;
+const loadingOverlay = document.getElementById('loading-overlay');
+
+function showLoadingOverlay() {
+  loadingOverlay.classList.remove('hidden');
+}
+
+function hideLoadingOverlay() {
+  setTimeout(() => {
+    loadingOverlay.classList.add('hidden');
+  }, 500);
+}
 
 function openPage(id) {
-  pages.forEach(p => p.classList.remove('active'));
-  const el = document.getElementById(id);
-  if (el) el.classList.add('active');
+  showLoadingOverlay();
+  const currentPage = document.querySelector('.page.active');
+  if (currentPage) {
+    currentPage.style.opacity = '0';
+    currentPage.style.transform = 'translateY(20px)';
+    setTimeout(() => {
+      currentPage.classList.remove('active');
+      const el = document.getElementById(id);
+      if (el) {
+        el.classList.add('active');
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        requestAnimationFrame(() => {
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        });
+      }
+      hideLoadingOverlay();
+    }, 300);
+  } else {
+    const el = document.getElementById(id);
+    if (el) {
+      el.classList.add('active');
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }
+    hideLoadingOverlay();
+  }
 
   if (mainNav.classList.contains('active')) {
     mainNav.classList.remove('active');
@@ -955,9 +992,7 @@ const recommended = [
     src: 'https://www.youtube.com/embed/fxgHlHF31DA?si=Z1ww1NotfL1EhOXG'
   }
 ];
-/* =====================
-   RENDER VIDEO (THUMBNAIL → IFRAME KETIKA DIKLIK)
-===================== */
+
 function getYoutubeId(url) {
   const match = url.match(/(?:embed\/|v=|youtu\.be\/)([^?&"'>]+)/);
   return match ? match[1] : null;
@@ -977,12 +1012,9 @@ function mkCard(item) {
       <div style="font-size:0.85rem;color:#bff6ff">YouTube</div>
     </div>
     <div class="desc">${escapeHtml(item.desc || '')}</div>
-    <div class="video-thumb" style="position:relative;cursor:pointer;margin-top:8px;height:180px;overflow:hidden;border-radius:10px">
-      <img src="${thumb}" alt="Thumbnail" style="width:100%;height:100%;object-fit:cover;display:block">
-      <div style="
-        position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-        background:rgba(0,0,0,0.6);border-radius:50%;width:60px;height:60px;
-        display:flex;align-items:center;justify-content:center;">
+    <div class="video-thumb">
+      <img src="${thumb}" alt="Thumbnail" loading="lazy">
+      <div>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
              fill="#fff" width="36px" height="36px"><path d="M8 5v14l11-7z"/></svg>
       </div>
@@ -992,9 +1024,9 @@ function mkCard(item) {
   const thumbDiv = el.querySelector('.video-thumb');
   thumbDiv.addEventListener('click', () => {
     thumbDiv.innerHTML = `
-      <iframe src="${item.src}" frameborder="0" allowfullscreen
+      <iframe src="${item.src}?autoplay=1" frameborder="0" allowfullscreen
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              style="width:100%;height:180px;border-radius:10px;border:0;display:block"></iframe>
+              style="width:100%;height:180px;border-radius:12px;border:0;display:block"></iframe>
     `;
   });
 
@@ -1005,18 +1037,18 @@ function fillGrid(gridId, list) {
   const g = document.getElementById(gridId);
   if (!g) return;
   g.innerHTML = '';
-  list.forEach(it => g.appendChild(mkCard(it)));
+  list.forEach((it, index) => {
+    const card = mkCard(it);
+    card.style.animationDelay = `${index * 0.05}s`;
+    g.appendChild(card);
+  });
 }
 
-/* render awal */
 fillGrid('grid-intro', introVideos);
 fillGrid('grid-advance', advanceVideos);
 fillGrid('grid-programming', programmingVideos);
 fillGrid('grid-videos', recommended);
 
-/* =====================
-   FILTER & SEARCH
-===================== */
 function filterGrid(pageKey, filter, chipEl) {
   const parent = chipEl?.parentNode;
   if (parent) {
@@ -1029,26 +1061,51 @@ function filterGrid(pageKey, filter, chipEl) {
   const grid = document.getElementById(gridId);
   Array.from(grid.children).forEach(card => {
     const tag = (card.dataset.tag || '').toLowerCase();
-    card.style.display = (filter === 'all' || tag.includes(filter)) ? '' : 'none';
+    const isVisible = (filter === 'all' || tag.includes(filter));
+    card.style.display = isVisible ? '' : 'none';
+    // Optional: Add/remove animation class for filtering
+    if (isVisible) {
+      card.style.animation = 'fadeIn 0.6s ease-out forwards';
+    } else {
+      card.style.animation = 'none';
+    }
   });
 }
 
 document.getElementById('searchIntro').addEventListener('input', (e) => {
   const q = e.target.value.toLowerCase().trim();
   document.querySelectorAll('#grid-intro .card').forEach(c => {
-    c.style.display = c.querySelector('.title').textContent.toLowerCase().includes(q) ? '' : 'none';
+    const isVisible = c.querySelector('.title').textContent.toLowerCase().includes(q);
+    c.style.display = isVisible ? '' : 'none';
+    if (isVisible) {
+      c.style.animation = 'fadeIn 0.6s ease-out forwards';
+    } else {
+      c.style.animation = 'none';
+    }
   });
 });
 document.getElementById('searchAdvance').addEventListener('input', (e) => {
   const q = e.target.value.toLowerCase().trim();
   document.querySelectorAll('#grid-advance .card').forEach(c => {
-    c.style.display = c.querySelector('.title').textContent.toLowerCase().includes(q) ? '' : 'none';
+    const isVisible = c.querySelector('.title').textContent.toLowerCase().includes(q);
+    c.style.display = isVisible ? '' : 'none';
+    if (isVisible) {
+      c.style.animation = 'fadeIn 0.6s ease-out forwards';
+    } else {
+      c.style.animation = 'none';
+    }
   });
 });
 document.getElementById('searchProg').addEventListener('input', (e) => {
   const q = e.target.value.toLowerCase().trim();
   document.querySelectorAll('#grid-programming .card').forEach(c => {
-    c.style.display = c.querySelector('.title').textContent.toLowerCase().includes(q) ? '' : 'none';
+    const isVisible = c.querySelector('.title').textContent.toLowerCase().includes(q);
+    c.style.display = isVisible ? '' : 'none';
+    if (isVisible) {
+      c.style.animation = 'fadeIn 0.6s ease-out forwards';
+    } else {
+      c.style.animation = 'none';
+    }
   });
 });
 
@@ -1058,9 +1115,6 @@ function escapeHtml(s) {
   })[m]);
 }
 
-/* =====================
-   POPUP KONTAK
-===================== */
 function showPopup(message, type) {
   const popup = document.createElement('div');
   popup.className = 'contact-popup ' + (type === 'success' ? 'success' : 'error');
@@ -1069,19 +1123,16 @@ function showPopup(message, type) {
 
   requestAnimationFrame(() => {
     popup.style.opacity = '1';
-    popup.style.transform = 'translateY(0)'; 
+    popup.style.transform = 'translateX(-50%) translateY(0)'; 
   });
 
   setTimeout(() => {
     popup.style.opacity = '0';
-    popup.style.transform = 'translateY(20px)';
-    setTimeout(() => popup.remove(), 300);
+    popup.style.transform = 'translateX(-50%) translateY(30px)';
+    setTimeout(() => popup.remove(), 400);
   }, 3000);
 }
 
-/* =====================
-   FORM KONTAK
-===================== */
 document.getElementById('sendContact').addEventListener('click', () => {
   const cname = document.getElementById('cname');
   const cmsg = document.getElementById('cmsg');
@@ -1116,7 +1167,8 @@ const emailOptionToggle = document.getElementById('emailOptionToggle');
 const emailOptions = document.getElementById('emailOptions');
 const cnameInput = document.getElementById('cname');
 
-emailOptionToggle.addEventListener('click', () => {
+emailOptionToggle.addEventListener('click', (e) => {
+  e.stopPropagation();
   emailOptions.classList.toggle('active');
 });
 emailOptions.querySelectorAll('button').forEach(button => {
@@ -1134,6 +1186,7 @@ function selectEmailOption(option) {
   if (option === 'anonymous') {
     cnameInput.value = 'Anonim';
     cnameInput.disabled = true;
+    cnameInput.placeholder = '';
   } else {
     cnameInput.value = '';
     cnameInput.disabled = false;
@@ -1141,41 +1194,46 @@ function selectEmailOption(option) {
   }
 }
 selectEmailOption('email');
-
-/* =====================
-   CANVAS BACKGROUND
-===================== */
 const canvas = document.getElementById('techBgCanvas');
 const ctx = canvas.getContext('2d');
 let w = canvas.width = window.innerWidth;
 let h = canvas.height = window.innerHeight;
 
 const particles = [];
-const particleCount = 100;
+const particleCount = 120;
+const particleColor = 'rgba(0,180,216,0.8)';
+const lineColor = 'rgba(0,180,216,0.3)';
+
 for (let i = 0; i < particleCount; i++) {
   particles.push({
     x: Math.random() * w,
     y: Math.random() * h,
-    vx: (Math.random() - 0.5) * 0.6,
-    vy: (Math.random() - 0.5) * 0.6,
-    size: Math.random() * 2 + 1
+    vx: (Math.random() - 0.5) * 0.8,
+    vy: (Math.random() - 0.5) * 0.8,
+    size: Math.random() * 2.5 + 1.5
   });
 }
+
 function draw() {
   ctx.clearRect(0, 0, w, h);
-  ctx.fillStyle = 'rgba(0,180,216,0.8)';
+  ctx.fillStyle = particleColor;
   for (let i = 0; i < particleCount; i++) {
     let p = particles[i];
     p.x += p.vx; p.y += p.vy;
-    if (p.x < 0 || p.x > w) p.vx *= -1;
-    if (p.y < 0 || p.y > h) p.vy *= -1;
+    if (p.x < 0) p.x = w;
+    if (p.x > w) p.x = 0;
+    if (p.y < 0) p.y = h;
+    if (p.y > h) p.y = 0;
+
     ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
+
     for (let j = i + 1; j < particleCount; j++) {
       let p2 = particles[j];
       let dx = p.x - p2.x, dy = p.y - p2.y;
       let dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 120) {
-        ctx.strokeStyle = 'rgba(0,180,216,' + (1 - dist / 120) * 0.4 + ')';
+      if (dist < 150) {
+        ctx.strokeStyle = lineColor.replace('0.3', (1 - dist / 150) * 0.4);
+        ctx.lineWidth = 0.5;
         ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
       }
     }
@@ -1183,7 +1241,18 @@ function draw() {
   requestAnimationFrame(draw);
 }
 draw();
+
 window.addEventListener('resize', () => {
   w = canvas.width = window.innerWidth;
   h = canvas.height = window.innerHeight;
+  particles.length = 0;
+  for (let i = 0; i < particleCount; i++) {
+    particles.push({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.8,
+      vy: (Math.random() - 0.5) * 0.8,
+      size: Math.random() * 2.5 + 1.5
+    });
+  }
 });
