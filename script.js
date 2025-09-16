@@ -1,6 +1,6 @@
 window.addEventListener("load", function() {
   window.scrollTo(0, 0);
-  openPage('home'); 
+  checkAuth();
   hideLoadingOverlay();
 });
 
@@ -20,6 +20,38 @@ const mainNav = document.getElementById('mainNav');
 const menuToggle = document.getElementById('menuToggle');
 const body = document.body;
 const loadingOverlay = document.getElementById('loading-overlay');
+const mainContent = document.querySelector('main');
+const loginModal = document.getElementById('login-modal');
+const loginForm = document.getElementById('loginForm');
+const registerForm = document.getElementById('registerForm');
+const loginEmailInput = document.getElementById('loginEmail');
+const loginPasswordInput = document.getElementById('loginPassword');
+const registerEmailInput = document.getElementById('registerEmail');
+const registerPasswordInput = document.getElementById('registerPassword');
+const confirmPasswordInput = document.getElementById('confirmPassword');
+const loginErrorMessage = document.getElementById('loginErrorMessage');
+const registerErrorMessage = document.getElementById('registerErrorMessage');
+const googleLoginBtn = document.getElementById('googleLoginBtn');
+const tabButtons = document.querySelectorAll('.tab-button');
+const tabContents = document.querySelectorAll('.tab-content');
+
+const logoSlot = document.getElementById('logoSlot');
+const profileMenu = document.getElementById('profileMenu');
+const profileEmailDisplay = document.getElementById('profileEmail');
+const logoutBtn = document.getElementById('logoutBtn');
+
+let currentUserEmail = localStorage.getItem('loggedInUserEmail') || '';
+
+function getRegisteredUsers() {
+  const users = localStorage.getItem('registeredUsers');
+  return users ? JSON.parse(users) : {};
+}
+
+function saveRegisteredUser(email, password) {
+  const users = getRegisteredUsers();
+  users[email] = password;
+  localStorage.setItem('registeredUsers', JSON.stringify(users));
+}
 
 function showLoadingOverlay() {
   loadingOverlay.classList.remove('hidden');
@@ -28,6 +60,106 @@ function showLoadingOverlay() {
 function hideLoadingOverlay() {
   setTimeout(() => {
     loadingOverlay.classList.add('hidden');
+  }, 500);
+}
+
+function showLoginModal() {
+  loginModal.classList.remove('hidden');
+  body.classList.add('modal-open');
+  mainContent.classList.add('hidden');
+}
+
+function hideLoginModal() {
+  loginModal.classList.add('hidden');
+  body.classList.remove('modal-open');
+  mainContent.classList.remove('hidden');
+}
+
+function checkAuth() {
+  const isLoggedIn = localStorage.getItem('isLoggedIn');
+  if (isLoggedIn === 'true') {
+    hideLoginModal();
+    currentUserEmail = localStorage.getItem('loggedInUserEmail');
+    profileEmailDisplay.textContent = currentUserEmail;
+    openPage('home');
+  } else {
+    showLoginModal();
+  }
+}
+
+function loginUser(email, password) {
+  showLoadingOverlay();
+  setTimeout(() => {
+    hideLoadingOverlay();
+    const registeredUsers = getRegisteredUsers();
+    if (registeredUsers[email] && registeredUsers[email] === password) {
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('loggedInUserEmail', email);
+      currentUserEmail = email;
+      profileEmailDisplay.textContent = currentUserEmail;
+      hideLoginModal();
+      openPage('home');
+    } else {
+      loginErrorMessage.textContent = 'Email atau password salah.';
+      loginEmailInput.classList.add("error-shake");
+      loginPasswordInput.classList.add("error-shake");
+      if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+      setTimeout(() => {
+        loginEmailInput.classList.remove("error-shake");
+        loginPasswordInput.classList.remove("error-shake");
+      }, 500);
+    }
+  }, 1000);
+}
+
+function registerUser(email, password) {
+  showLoadingOverlay();
+  setTimeout(() => {
+    hideLoadingOverlay();
+    const registeredUsers = getRegisteredUsers();
+    if (registeredUsers[email]) {
+      registerErrorMessage.textContent = 'Email ini sudah terdaftar. Silakan login atau gunakan email lain.';
+      registerEmailInput.classList.add("error-shake");
+      if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+      setTimeout(() => {
+        registerEmailInput.classList.remove("error-shake");
+      }, 500);
+      return;
+    }
+
+    saveRegisteredUser(email, password);
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('loggedInUserEmail', email);
+    currentUserEmail = email;
+    profileEmailDisplay.textContent = currentUserEmail;
+    hideLoginModal();
+    openPage('home');
+  }, 1000);
+}
+
+function loginWithGoogle() {
+  showLoadingOverlay();
+  setTimeout(() => {
+    hideLoadingOverlay();
+    const googleEmail = 'google_user@gmail.com';
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('loggedInUserEmail', googleEmail);
+    currentUserEmail = googleEmail;
+    profileEmailDisplay.textContent = currentUserEmail;
+    hideLoginModal();
+    openPage('home');
+  }, 1500);
+}
+
+function logoutUser() {
+  showLoadingOverlay();
+  setTimeout(() => {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('loggedInUserEmail');
+    currentUserEmail = '';
+    hideLoadingOverlay();
+    hideProfileMenu();
+    showLoginModal();
   }, 500);
 }
 
@@ -84,6 +216,125 @@ navLinks.forEach(a => {
 menuToggle.addEventListener('click', () => {
   mainNav.classList.toggle('active');
 });
+
+tabButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    const tab = button.dataset.tab;
+
+    tabButtons.forEach(btn => btn.classList.remove('active'));
+    button.classList.add('active');
+
+    tabContents.forEach(content => content.classList.remove('active'));
+    document.getElementById(`${tab}-tab`).classList.add('active');
+    loginErrorMessage.textContent = '';
+    registerErrorMessage.textContent = '';
+    loginEmailInput.classList.remove("error-shake");
+    loginPasswordInput.classList.remove("error-shake");
+    registerEmailInput.classList.remove("error-shake");
+    registerPasswordInput.classList.remove("error-shake");
+    confirmPasswordInput.classList.remove("error-shake");
+  });
+});
+
+loginForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  loginErrorMessage.textContent = '';
+  loginEmailInput.classList.remove("error-shake");
+  loginPasswordInput.classList.remove("error-shake");
+
+  const email = loginEmailInput.value.trim();
+  const password = loginPasswordInput.value.trim();
+
+  if (!email || !password) {
+    loginErrorMessage.textContent = 'Harap isi semua kolom.';
+    if (!email) loginEmailInput.classList.add("error-shake");
+    if (!password) loginPasswordInput.classList.add("error-shake");
+    if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+    setTimeout(() => {
+      loginEmailInput.classList.remove("error-shake");
+      loginPasswordInput.classList.remove("error-shake");
+    }, 500);
+    return;
+  }
+  loginUser(email, password);
+});
+
+registerForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  registerErrorMessage.textContent = '';
+  registerEmailInput.classList.remove("error-shake");
+  registerPasswordInput.classList.remove("error-shake");
+  confirmPasswordInput.classList.remove("error-shake");
+
+  const email = registerEmailInput.value.trim();
+  const password = registerPasswordInput.value.trim();
+  const confirmPassword = confirmPasswordInput.value.trim();
+
+  let valid = true;
+  if (!email) {
+    registerEmailInput.classList.add("error-shake");
+    valid = false;
+  }
+  if (!password) {
+    registerPasswordInput.classList.add("error-shake");
+    valid = false;
+  }
+  if (!confirmPassword) {
+    confirmPasswordInput.classList.add("error-shake");
+    valid = false;
+  }
+
+  if (!valid) {
+    registerErrorMessage.textContent = 'Harap isi semua kolom.';
+    if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+    setTimeout(() => {
+      registerEmailInput.classList.remove("error-shake");
+      registerPasswordInput.classList.remove("error-shake");
+      confirmPasswordInput.classList.remove("error-shake");
+    }, 500);
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    registerErrorMessage.textContent = 'Password tidak cocok.';
+    registerPasswordInput.classList.add("error-shake");
+    confirmPasswordInput.classList.add("error-shake");
+    if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+    setTimeout(() => {
+      registerPasswordInput.classList.remove("error-shake");
+      confirmPasswordInput.classList.remove("error-shake");
+    }, 500);
+    return;
+  }
+
+  registerUser(email, password);
+});
+
+googleLoginBtn.addEventListener('click', loginWithGoogle);
+
+function showProfileMenu() {
+  profileMenu.classList.remove('hidden');
+}
+
+function hideProfileMenu() {
+  profileMenu.classList.add('hidden');
+}
+
+logoSlot.addEventListener('click', (e) => {
+  e.stopPropagation();
+  if (localStorage.getItem('isLoggedIn') === 'true') {
+    profileMenu.classList.toggle('hidden');
+  }
+});
+
+logoutBtn.addEventListener('click', logoutUser);
+
+document.addEventListener('click', (e) => {
+  if (!profileMenu.contains(e.target) && !logoSlot.contains(e.target)) {
+    hideProfileMenu();
+  }
+});
+
 
 const introVideos = [
   {
@@ -1063,7 +1314,6 @@ function filterGrid(pageKey, filter, chipEl) {
     const tag = (card.dataset.tag || '').toLowerCase();
     const isVisible = (filter === 'all' || tag.includes(filter));
     card.style.display = isVisible ? '' : 'none';
-    // Optional: Add/remove animation class for filtering
     if (isVisible) {
       card.style.animation = 'fadeIn 0.6s ease-out forwards';
     } else {
